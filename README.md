@@ -1,2 +1,2 @@
-## ReleaseMind Reproducibility 
+## ReleaseMind
  Reproducibility of the ReleaseMind paper.
