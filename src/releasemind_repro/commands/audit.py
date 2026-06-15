@@ -76,6 +76,6 @@ def run(args, config) -> dict:
         print("Audit done")
         print(f"rows={report.get('rows')}")
         print(f"output={cfg.oracle_out}")
-        if args.raw:
+        if getattr(args, "raw", False):
             print(f"raw_output={cfg.oracle_raw_out}")
     return report

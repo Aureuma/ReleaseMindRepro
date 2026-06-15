@@ -8,6 +8,6 @@ shift || true
 cd "$ROOT_DIR"
 
 printf 'Running full paper reproduction with %s\n' "$CONFIG"
-uv run releasemind-repro reproduce-paper --config "$CONFIG" "$@"
-uv run releasemind-repro build-docs --config "$CONFIG"
-uv run releasemind-repro verify --config "$CONFIG" --compare
+uv run releasemind-repro --config "$CONFIG" reproduce-paper "$@"
+uv run releasemind-repro --config "$CONFIG" build-docs
+uv run releasemind-repro --config "$CONFIG" verify --compare

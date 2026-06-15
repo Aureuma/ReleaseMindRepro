@@ -1,75 +1,77 @@
-# Command Reference
+# 📘 Command Reference
 
-## Global
-
-All commands accept `--config <path>` and `--json` where documented.
-
-## `doctor`
+All commands accept the global form `--config <path>` before command:
 
 ```bash
-uv run releasemind-repro doctor --config configs/paper.toml [--require-audit-key] [--skip-neobert]
+uv run releasemind-repro --config configs/paper.toml <command>
 ```
 
-## `train-proxies`
+## 🩺 `doctor`
 
 ```bash
-uv run releasemind-repro train-proxies --config configs/paper.toml [--smartnote ...]
+uv run releasemind-repro --config configs/paper.toml doctor [--require-audit-key] [--skip-neobert]
 ```
 
-Outputs: SmartNote proxy, RNSum proxy, model file, proxy summary JSON.
-
-## `audit`
+## 🧬 `train-proxies`
 
 ```bash
-uv run releasemind-repro audit --config configs/paper.toml [--provider gemini|bedrock] [--sample-size N]
+uv run releasemind-repro --config configs/paper.toml train-proxies [--smartnote ...]
 ```
 
-Outputs: oracle audit JSONL, optional raw JSONL, oracle summary JSON.
+Outputs: SmartNote proxy, RNSum proxy, model file, and proxy summary JSON.
 
-## `evaluate-risk`
+## 🧪 `audit`
 
 ```bash
-uv run releasemind-repro evaluate-risk --config configs/paper.toml [--deltas 0.1,0.2]
+uv run releasemind-repro --config configs/paper.toml audit [--provider gemini|bedrock] [--sample-size N]
 ```
 
-Outputs: `outputs/eval/risk_control_summary.csv` and `.meta.json`, plus per-dataset curves.
+Outputs: `outputs/audit/oracle_audit.jsonl` plus optional raw JSONL and summary JSON.
 
-## `simulate-routing`
+## 📊 `evaluate-risk`
 
 ```bash
-uv run releasemind-repro simulate-routing --config configs/paper.toml
+uv run releasemind-repro --config configs/paper.toml evaluate-risk [--deltas 0.1,0.2]
 ```
 
-Outputs: `outputs/routing/simulate_routing.csv` and per-dataset routing PDFs.
+Outputs: `outputs/eval/risk_control_summary.csv` and `.meta.json`.
 
-## `reproduce-paper`
+## 🗺️ `simulate-routing`
 
 ```bash
-uv run releasemind-repro reproduce-paper --config configs/paper.toml [--skip-*] [--continue-if-present]
+uv run releasemind-repro --config configs/paper.toml simulate-routing
+```
+
+Outputs: `outputs/routing/simulate_routing.csv` and per-dataset PDFs.
+
+## 🛠️ `reproduce-paper`
+
+```bash
+uv run releasemind-repro --config configs/paper.toml reproduce-paper [--skip-*] [--continue-if-present]
 ```
 
 Runs train → audit → evaluate → simulate.
 
-## `verify`
+## ✅ `verify`
 
 ```bash
-uv run releasemind-repro verify --config configs/paper.toml --strict [--compare]
+uv run releasemind-repro --config configs/paper.toml verify --strict [--compare]
 ```
 
-Checks schema/required columns and optionally compares against manifest.
+Checks required schema, optional manifest comparison, and returns a compact report.
 
-## `compare`
+## ⚖️ `compare`
 
 ```bash
-uv run releasemind-repro compare --config configs/paper.toml --manifest artifacts/reference/manifest.json --strict --json
+uv run releasemind-repro --config configs/paper.toml compare --manifest artifacts/reference/manifest.json --strict --json
 ```
 
-Compares generated files against reference artifacts.
+Compares generated files against expected reference artifacts.
 
-## `build-docs`
+## 🧾 `build-docs`
 
 ```bash
-uv run releasemind-repro build-docs --config configs/paper.toml
+uv run releasemind-repro --config configs/paper.toml build-docs
 ```
 
-Refreshes manifest and run metadata.
+Refreshes manifest + reproducibility metadata bundle.

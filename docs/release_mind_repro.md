@@ -11,7 +11,7 @@ This repository is the public execution layer for reproducing the quantitative o
 ## One-command summary
 
 ```bash
-uv run releasemind-repro reproduce-paper --config configs/paper_smoke.toml
+uv run releasemind-repro --config configs/paper_smoke.toml reproduce-paper
 ```
 
 Use `paper_smoke.toml` for a fast smoke run and `paper.toml` for the full paper setup.

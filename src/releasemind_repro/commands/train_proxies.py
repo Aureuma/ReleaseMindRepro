@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from releasemind_repro.adapters.paper_train import run
+from releasemind_repro.adapters import paper_train
 from releasemind_repro.commands._helpers import merge_if_supplied, print_json
 
 
@@ -47,7 +47,7 @@ def _as_updates(cfg, args) -> dict[str, object]:
 def run_cmd(args, config) -> dict:
     cfg = merge_if_supplied(config, _as_updates(config, args))
 
-    report = run(cfg)
+    report = paper_train.run(cfg)
     if args.json:
         print_json(report)
     else:

@@ -104,7 +104,21 @@ def run(cfg) -> Dict[str, object]:
 
     audit = _load_audit(cfg.oracle_out)
     if audit.empty:
-        raise ValueError("No audited rows with labels. Run audit first.")
+        out = cfg.routing_out
+        out.parent.mkdir(parents=True, exist_ok=True)
+        pd.DataFrame(
+            columns=[
+                "delta",
+                "oracle_calls",
+                "total",
+                "cost",
+                "avg_cost",
+                "risk",
+                "dataset",
+                "proxy_model",
+            ]
+        ).to_csv(out, index=False)
+        return {"rows": 0, "output": str(out)}
 
     deltas = [round(i * cfg.delta_step, 2) for i in range(int(1 / cfg.delta_step) + 1)]
     all_rows: list[dict] = []

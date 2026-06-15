@@ -1,37 +1,37 @@
-# Quickstart
+# ⚡ Quickstart
 
-## Minimum reproducibility path
+## 🚦 Minimum path (smoke config)
 
 ```bash
 cd ReleaseMindRepro
 uv sync
-uv run releasemind-repro doctor --config configs/paper_smoke.toml
-uv run releasemind-repro reproduce-paper --config configs/paper_smoke.toml --json
+uv run releasemind-repro --config configs/paper_smoke.toml doctor
+uv run releasemind-repro --config configs/paper_smoke.toml reproduce-paper --json
 ```
 
-## Smoke path with explicit checkpoints
+## 🧪 Smoke run with checkpoints
 
-1. Verify base schema checks:
+1. Verify schema checks:
 
 ```bash
-uv run releasemind-repro verify --config configs/paper_smoke.toml --strict
+uv run releasemind-repro --config configs/paper_smoke.toml verify --strict
 ```
 
-2. Compare against the reference manifest if present:
+2. Compare against reference manifest if present:
 
 ```bash
-uv run releasemind-repro compare --config configs/paper_smoke.toml --strict --json
+uv run releasemind-repro --config configs/paper_smoke.toml compare --strict --json
 ```
 
-## Full paper path
+## 🧭 Full paper path
 
 ```bash
-uv run releasemind-repro doctor --config configs/paper.toml
-uv run releasemind-repro reproduce-paper --config configs/paper.toml --publish-paper-layout --json
-uv run releasemind-repro build-docs --config configs/paper.toml
+uv run releasemind-repro --config configs/paper.toml doctor
+uv run releasemind-repro --config configs/paper.toml reproduce-paper --publish-paper-layout --json
+uv run releasemind-repro --config configs/paper.toml build-docs
 ```
 
-## Expected outputs
+## 📈 Expected outputs
 
 - `outputs/risk_proxy/smartnote_proxy.parquet`
 - `outputs/risk_proxy/rnsum_proxy.parquet`

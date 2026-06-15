@@ -82,7 +82,39 @@ def run(cfg) -> Dict[str, object]:
 
     df = _load_audit(cfg.oracle_out)
     if df.empty:
-        raise ValueError("No oracle rows with labels. Run audit first.")
+        out = cfg.risk_eval_out
+        out.parent.mkdir(parents=True, exist_ok=True)
+        pd.DataFrame(
+            columns=[
+                "dataset",
+                "variant",
+                "delta",
+                "n_total",
+                "n_accept",
+                "coverage",
+                "violations",
+                "risk_rate",
+                "risk_ci_low",
+                "risk_ci_high",
+                "oracle_calls",
+            ]
+        ).to_csv(out, index=False)
+        meta = {
+            "generated_with": "evaluate-risk",
+            "audit_meta": [],
+            "bins": BINS,
+            "deltas": cfg.deltas,
+            "mode": cfg.mode,
+            "compare_corrections": cfg.compare_corrections,
+            "gap_quantile": cfg.gap_quantile,
+            "seed": cfg.seed,
+            "audit_frac": cfg.audit_frac,
+            "ci_alpha": cfg.ci_alpha,
+            "reason": "no_oracle_labels",
+        }
+        cfg.risk_eval_meta_out.parent.mkdir(parents=True, exist_ok=True)
+        cfg.risk_eval_meta_out.write_text(json.dumps(meta, indent=2), encoding="utf-8")
+        return {"rows": 0, "output": str(cfg.risk_eval_out), "meta": str(cfg.risk_eval_meta_out)}
 
     audit_frac = cfg.audit_frac
     if not 0 < audit_frac <= 1:

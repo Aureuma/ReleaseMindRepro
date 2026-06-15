@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import sys
 from pathlib import Path
 
 from importlib.metadata import PackageNotFoundError
@@ -33,9 +34,49 @@ def _build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _normalize_argv(raw_args: list[str]) -> list[str]:
+    """Return argv-style arguments with `--config` normalized before subcommands.
+
+    This allows both:
+      - `repro --config X cmd`
+      - `repro cmd --config X`
+    and keeps the repo docs/scripts usable even if users run the old style.
+    """
+
+    normalized: list[str] = []
+    config_value: str | None = None
+    skip_next = False
+
+    for index, arg in enumerate(raw_args):
+        if skip_next:
+            skip_next = False
+            continue
+
+        if arg == "--config":
+            if index + 1 >= len(raw_args):
+                # Preserve parse failure for a clearer argparse message.
+                normalized.append(arg)
+                continue
+            config_value = raw_args[index + 1]
+            skip_next = True
+            continue
+
+        if arg.startswith("--config="):
+            _, value = arg.split("=", 1)
+            config_value = value
+            continue
+
+        normalized.append(arg)
+
+    if config_value is None:
+        return normalized
+
+    return ["--config", config_value, *normalized]
+
+
 def main() -> int:
     parser = _build_parser()
-    args = parser.parse_args()
+    args = parser.parse_args(_normalize_argv(sys.argv[1:]))
     registry = command_registry()
 
     config_path = Path(args.config)

@@ -1,76 +1,68 @@
-# ReleaseMindRepro
+# 🔬 ReleaseMindRepro
 
 Reproducibility package for the ReleaseMind paper (`Aureuma/ReleaseMindPaper`).
 
-This repository contains the public artifacts and executable pipeline needed to
-reproduce all reported quantitative results from the paper on commodity CPU hardware.
+This repo contains the public artifacts and executable pipeline to reproduce the
+paper’s quantitative results on commodity CPU hardware.
 
-## What is in this repository
+## 📦 What’s included
 
-- `releasemind_repro` — Python package with a reproducible CLI.
-- `configs/paper.toml` — pinned paper defaults (sampling, thresholds, costs).
-- `data/` — public fixtures and lightweight local caches.
-- `artifacts/` — reference outputs used for regression checks.
-- `outputs/` — default location for generated artifacts.
-- `docs/` — reproducibility instructions and documentation.
-- `tests/` — parser and utility checks for deterministic behavior.
+- `src/releasemind_repro/` — CLI package and reproducibility engine.
+- `configs/paper.toml` — paper defaults for sampling, thresholds, and cost model.
+- `data/` — bundled fixtures and cached source inputs.
+- `outputs/` — generated artifacts from command runs.
+- `artifacts/` — reference manifest bundle for verification.
+- `docs/` — setup and reproducibility instructions.
+- `tests/` — command/config validation coverage.
 
-## Quick start
+## ⚡ Quick start
 
 ```bash
 cd ReleaseMindRepro
-
-# Install from source
 uv sync
-
-# Check environment and tool availability
-uv run releasemind-repro doctor
-
-# Prepare paper config and show defaults
-uv run releasemind-repro doctor --config configs/paper.toml
+uv run releasemind-repro --config configs/paper.toml doctor
+uv run releasemind-repro --config configs/paper.toml doctor --json
 ```
 
-## One-step paper reproduction (reported results)
+## 📚 One-command paper reproduction
 
 ```bash
-uv run releasemind-repro reproduce-paper --config configs/paper.toml
+uv run releasemind-repro --config configs/paper.toml reproduce-paper
 ```
 
-This command runs:
+This runs:
 
-1. TF-IDF SmartNote proxy training (`data/smartnote_proxy.parquet`)
-2. RNSum proxy construction (`data/rnsum_proxy.parquet`) from `rnsum_with_text`
-3. Gemini audit for the full paper sample
-4. Risk-control sweep and coverage/risk tables
-5. Cost–risk simulation and plots
-6. Reference comparison against committed paper outputs
+1. SmartNote proxy training (`outputs/risk_proxy/smartnote_proxy.parquet`)
+2. RNSum proxy construction (`outputs/risk_proxy/rnsum_proxy.parquet`)
+3. Oracle audit over sampled rows
+4. Risk-control evaluation and coverage/risk tables
+5. Cost–risk routing simulation + plots
+6. Reference comparison against committed artifacts
 
-## Reproduce commands
+## 🧪 Command recipes
 
 ```bash
-uv run releasemind-repro train-proxies --config configs/paper.toml
-uv run releasemind-repro audit --config configs/paper.toml --provider gemini --sample-size 3000 --max-workers 5 --min-interval 0.4
-uv run releasemind-repro evaluate-risk --config configs/paper.toml --compare-corrections
-uv run releasemind-repro simulate-routing --config configs/paper.toml
+uv run releasemind-repro --config configs/paper.toml train-proxies
+uv run releasemind-repro --config configs/paper.toml audit --provider gemini --sample-size 3000 --max-workers 5 --min-interval 0.4
+uv run releasemind-repro --config configs/paper.toml evaluate-risk --compare-corrections
+uv run releasemind-repro --config configs/paper.toml simulate-routing
 ```
 
-## Environment variables
+## 🔑 Environment variables
 
 - `GOOGLE_API_KEY` or `GEMINI_API_KEY`: Gemini API key for oracle audits.
 - `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_DEFAULT_REGION`: optional
-  for Bedrock-based fallback audit provider.
-- Never store secrets in this repo.
+  Bedrock fallback credentials.
+- Never store secrets in this repository.
 
-## Datasets and data policy
+## 📁 Dataset policy
 
 - RNSum source: `https://github.com/nlab-mpg/RNSum-Dataset` (CC BY 4.0).
-- SmartNote source: `https://github.com/osslab-pku/SmartNote` and
-  Figshare replication package (CC BY 4.0).
-- Replication artifacts are tracked only as references for reproducibility checks.
-- Large external downloads (SmartNote replication zip, full RNSum text snapshot) are
-  not bundled by default.
+- SmartNote source: `https://github.com/osslab-pku/SmartNote` (+ replication
+  package, CC BY 4.0).
+- Upstream datasets are not bundled in full; only lightweight fixtures are stored.
 
-## Expected outputs
+## 📈 Expected outputs
 
 - `outputs/eval/risk_control_summary.csv`
 - `outputs/eval/risk_control_summary.meta.json`
@@ -80,11 +72,21 @@ uv run releasemind-repro simulate-routing --config configs/paper.toml
 - `outputs/figures/routing_cost_risk_rnsum.pdf`
 - `outputs/figures/routing_cost_risk_smartnote.pdf`
 
-For exact reference outputs used in the paper, see
-`artifacts/reference/`.
+Reference bundle (required for strict reproducibility checks):
+`artifacts/reference/`
 
-## License
+## 🧭 Canonical invocation pattern
 
-Code and docs in this repository are released under the repository-level
-license for this reproducibility package.
-Datasets and upstream code remain under their original upstream terms.
+Prefer this order in commands and scripts:
+
+```bash
+uv run releasemind-repro --config <path> <command>
+```
+
+`<command> --config <path>` is still supported for backward compatibility.
+
+## 📜 License
+
+Code and docs in this repository are licensed under the repository-level license
+for this reproducibility package. Upstream datasets and code remain subject to
+their original terms.
