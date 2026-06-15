@@ -2,14 +2,17 @@
 
 from __future__ import annotations
 
-from types import SimpleNamespace
+import json
 from pathlib import Path
+from types import SimpleNamespace
 
 from releasemind_repro.commands import compare as compare_command
 from releasemind_repro.commands._helpers import print_json
 from releasemind_repro.pipeline.reference import load_manifest, validate_manifest_paths
 from releasemind_repro.pipeline.schemas import validate_artifact, required_columns
 from releasemind_repro.utils import row_count
+
+SKIP_AWARE_ARTIFACTS = frozenset({"oracle_audit", "risk_summary", "routing"})
 
 
 def add_parser(subparsers, command: str) -> None:
@@ -48,6 +51,35 @@ def _check_artifact(label: str, path: Path, required_columns: tuple[str, ...], *
     return payload
 
 
+def _oracle_skip_context(config) -> dict[str, object] | None:
+    summary_path = Path(config.oracle_summary_out)
+    if not summary_path.exists():
+        return None
+    try:
+        payload = json.loads(summary_path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    if not isinstance(payload, dict) or not payload.get("skip_if_missing"):
+        return None
+    return payload
+
+
+def _apply_skip_context(check: dict[str, object], skip_context: dict[str, object] | None) -> dict[str, object]:
+    if not skip_context:
+        return check
+    if check.get("label") not in SKIP_AWARE_ARTIFACTS:
+        return check
+    if check.get("errors") != ["artifact is empty"]:
+        return check
+
+    updated = dict(check)
+    updated["ok"] = True
+    updated["skipped"] = True
+    updated["skip_reason"] = skip_context.get("skip_reason", "skip_if_missing")
+    updated.pop("errors", None)
+    return updated
+
+
 def _print_console(report: dict[str, object]) -> None:
     print(f"verify ok: {report['ok']}")
     print("artifact_checks:")
@@ -71,13 +103,20 @@ def run(args, config) -> dict[str, object]:
         "artifact_checks": [],
     }
     checks: list[dict[str, object]] = []
+    skip_context = _oracle_skip_context(config)
 
     for label, path, required in _schema_entries(config):
         check = _check_artifact(label, path, required, strict=args.strict)
+        check = _apply_skip_context(check, skip_context)
         checks.append(check)
         if not check["ok"]:
             report["ok"] = False
     report["artifact_checks"] = checks
+    if skip_context:
+        report["oracle_skip"] = {
+            "enabled": True,
+            "reason": skip_context.get("skip_reason", "skip_if_missing"),
+        }
 
     manifest_path = Path(args.manifest or config.reference_manifest)
     compare_requested = bool(args.compare or (config.compare_reference and not args.skip_compare))

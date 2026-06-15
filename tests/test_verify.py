@@ -70,6 +70,40 @@ def _write_artifacts(root: Path) -> None:
     )
 
 
+def _write_skip_artifacts(root: Path) -> None:
+    (root / "outputs/risk_proxy").mkdir(parents=True, exist_ok=True)
+    (root / "outputs/audit").mkdir(parents=True, exist_ok=True)
+    (root / "outputs/eval").mkdir(parents=True, exist_ok=True)
+    (root / "outputs/routing").mkdir(parents=True, exist_ok=True)
+    (root / "outputs/figures").mkdir(parents=True, exist_ok=True)
+
+    (root / "outputs/risk_proxy/smartnote_proxy.csv").write_text(
+        "body,isInRN,risk_score\nabc,1,0.2\n", encoding="utf-8"
+    )
+    (root / "outputs/risk_proxy/rnsum_proxy.csv").write_text(
+        "input_text,target_text,risk_score\na,b,0.3\n", encoding="utf-8"
+    )
+    (root / "outputs/audit/oracle_audit.jsonl").write_text("", encoding="utf-8")
+    (root / "outputs/audit/oracle_audit_summary.json").write_text(
+        json.dumps(
+            {
+                "rows": 0,
+                "skip_if_missing": True,
+                "skip_reason": "missing_api_credentials",
+            }
+        ),
+        encoding="utf-8",
+    )
+    (root / "outputs/eval/risk_control_summary.csv").write_text(
+        "dataset,variant,delta,n_total,n_accept,coverage,violations,risk_rate,risk_ci_low,risk_ci_high,oracle_calls\n",
+        encoding="utf-8",
+    )
+    (root / "outputs/routing/simulate_routing.csv").write_text(
+        "delta,oracle_calls,total,cost,avg_cost,risk,dataset,proxy_model\n",
+        encoding="utf-8",
+    )
+
+
 def test_verify_reports_missing_artifacts(tmp_path: Path) -> None:
     repo_root = tmp_path / "repo"
     (repo_root / "src" / "releasemind_repro").mkdir(parents=True)
@@ -87,3 +121,26 @@ def test_verify_reports_missing_artifacts(tmp_path: Path) -> None:
     assert report["ok"] is False
     checks = {entry["label"]: entry for entry in report["artifact_checks"]}
     assert checks["risk_summary"]["ok"] is False
+
+
+def test_verify_accepts_intentional_empty_oracle_outputs(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    (repo_root / "src" / "releasemind_repro").mkdir(parents=True)
+    (repo_root / "pyproject.toml").write_text("[project]\nname = 'tmp'\nversion = '0.0.1'\n", encoding="utf-8")
+
+    config_path = repo_root / "configs" / "paper_smoke.toml"
+    _write_minimal_config(config_path)
+
+    cfg = load_config(config_path)
+    _write_skip_artifacts(repo_root)
+
+    args = SimpleNamespace(manifest=None, strict=True, compare=False, skip_compare=True, tolerance=0.0, json=False)
+    report = verify.run(args, cfg)
+
+    assert report["ok"] is True
+    assert report["oracle_skip"] == {"enabled": True, "reason": "missing_api_credentials"}
+    checks = {entry["label"]: entry for entry in report["artifact_checks"]}
+    assert checks["oracle_audit"]["ok"] is True
+    assert checks["oracle_audit"]["skipped"] is True
+    assert checks["risk_summary"]["ok"] is True
+    assert checks["routing"]["ok"] is True
