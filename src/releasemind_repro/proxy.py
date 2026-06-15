@@ -255,7 +255,7 @@ def train_smartnote_proxy(
 
     model = Pipeline([
         ("tfidf", TfidfVectorizer(max_features=max_features, stop_words="english")),
-        ("clf", LogisticRegression(max_iter=max_iter, n_jobs=n_jobs, class_weight="balanced")),
+        ("clf", LogisticRegression(max_iter=max_iter, class_weight="balanced")),
     ])
     model.fit(df["body"], df["isInRN"].astype(int))
     risk_score = model.predict_proba(df["body"])[:, 1]
