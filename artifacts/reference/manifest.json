@@ -1,0 +1,19 @@
+{
+  "version": "reproducibility-manifest/1",
+  "files": [
+    {"path": "outputs/risk_proxy/smartnote_proxy.parquet", "sha256": "", "rows": 0, "bytes": 0},
+    {"path": "outputs/risk_proxy/rnsum_proxy.parquet", "sha256": "", "rows": 0, "bytes": 0},
+    {"path": "outputs/risk_proxy/smartnote_tfidf_logreg.joblib", "sha256": "", "rows": 0, "bytes": 0},
+    {"path": "outputs/risk_proxy/proxy_summary.json", "sha256": "", "rows": 0, "bytes": 0},
+    {"path": "outputs/audit/oracle_audit.jsonl", "sha256": "", "rows": 0, "bytes": 0},
+    {"path": "outputs/audit/oracle_audit_raw.jsonl", "sha256": "", "rows": 0, "bytes": 0},
+    {"path": "outputs/audit/oracle_audit_summary.json", "sha256": "", "rows": 0, "bytes": 0},
+    {"path": "outputs/eval/risk_control_summary.csv", "sha256": "", "rows": 0, "bytes": 0},
+    {"path": "outputs/eval/risk_control_summary.meta.json", "sha256": "", "rows": 0, "bytes": 0},
+    {"path": "outputs/routing/simulate_routing.csv", "sha256": "", "rows": 0, "bytes": 0},
+    {"path": "outputs/figures/risk_control_curve_smartnote.pdf", "sha256": "", "rows": 0, "bytes": 0},
+    {"path": "outputs/figures/risk_control_curve_rnsum.pdf", "sha256": "", "rows": 0, "bytes": 0},
+    {"path": "outputs/figures/routing_cost_risk_smartnote.pdf", "sha256": "", "rows": 0, "bytes": 0},
+    {"path": "outputs/figures/routing_cost_risk_rnsum.pdf", "sha256": "", "rows": 0, "bytes": 0}
+  ]
+}

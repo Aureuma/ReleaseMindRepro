@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+*.so
+.venv/
+venv/
+.env
+.env.*
+.credentials
+
+# Data artifacts
+outputs/
+!artifacts/reference/
+
+# Local datasets and caches
+data/raw/
+data/cache/
+data/release_notes/
+
+# Locks and envs
+uv.lock
+.pip/
+
+# Node
+node_modules/
+.pnpm/
+.pnpm-debug.log
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Notebook and logs
+.ipynb_checkpoints/
+*.log
+
+# Test temp
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/

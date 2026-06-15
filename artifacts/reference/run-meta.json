@@ -1,0 +1,9 @@
+{
+  "generated_at": "1970-01-01T00:00:00Z",
+  "command": "releasemind-repro build-docs --config configs/paper_smoke.toml",
+  "config_hash": "uninitialized",
+  "artifact_count": 14,
+  "artifact_root": "outputs",
+  "repository": "",
+  "notes": "Placeholder reference bundle. Regenerate with `releasemind-repro build-docs --config <config>` after running reproducibility commands."
+}

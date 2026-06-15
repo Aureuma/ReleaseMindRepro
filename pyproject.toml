@@ -1,6 +1,6 @@
 [project]
 name = "releasemind-repro"
-version = "0.1.1"
+version = "0.1.2"
 description = "ReleaseMind reproducibility pipeline for ReleaseMindPaper"
 readme = "README.md"
 requires-python = ">=3.10"

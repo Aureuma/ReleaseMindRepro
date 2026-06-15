@@ -1,0 +1,10 @@
+{"body":"Add support for safe mode command when performing a release rollout.","isInRN":true}
+{"body":"Refactor internal metrics collector to improve runtime of test harness.","isInRN":false}
+{"body":"Fix crash when exporting user dashboard reports with Unicode paths.","isInRN":true}
+{"body":"Bump version numbers in package metadata.","isInRN":false}
+{"body":"Add API endpoint to retrieve release-notes history by date range.","isInRN":true}
+{"body":"Remove legacy build scripts and tidy lint errors in CI.","isInRN":false}
+{"body":"Improve startup performance of CLI by lazy-loading heavyweight modules.","isInRN":true}
+{"body":"Update documentation for setup instructions.","isInRN":false}
+{"body":"Fix security regression in authentication token rotation path.","isInRN":true}
+{"body":"Minor dependency cleanup in test fixtures.","isInRN":false}

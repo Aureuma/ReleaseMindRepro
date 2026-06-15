@@ -1,0 +1,6 @@
+{"commit_messages":["Add --dry-run flag to audit command","Avoid hitting API when repository has no changes"],"release_note":"Features: Added a new dry-run mode to audit commands for safer previews."}
+{"commit_messages":["chore: bump dependencies","fix: update CI workflow"],"release_note":"Maintenance: Bumped build dependencies and refreshed CI workflow."}
+{"commit_messages":"Refactor release note generator into shared module.","release_note":"Features: Extracted release note generation into shared module for all outputs."}
+{"commit_messages":["Cache result of parse logic in evaluator","Remove dead code path"],"release_note":"Improvements: Added caching layer for parser state and removed deprecated code."}
+{"commit_messages":["Fix integer overflow in routing simulation","Fix memory leak in streaming parser"],"release_note":"Bug fixes: Fixed routing simulation integer overflow and streaming parser memory leak."}
+{"commit_messages":["Reformatted files","Merge branch 'docs'"],"release_note":"Bug fixes: Reformatted code and updated docs."}

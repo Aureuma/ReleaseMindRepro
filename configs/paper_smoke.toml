@@ -1,0 +1,56 @@
+sample_size = 10
+seed = 42
+audit_frac = 0.5
+audit_provider = "gemini"
+model = "models/gemini-2.5-pro"
+oracle_mode = "standard"
+max_workers = 2
+max_retries = 2
+min_interval = 2.0
+batch_poll_interval = 30
+min_delay = 2.0
+temperature = 0.0
+max_tokens = 256
+overwrite = true
+
+smartnote_dataset = "data/fixtures/smartnote_small.parquet"
+rnsum_dataset = "data/fixtures/rnsum_small.jsonl"
+smartnote_proxy_out = "outputs/risk_proxy/smartnote_proxy.parquet"
+rnsum_proxy_out = "outputs/risk_proxy/rnsum_proxy.parquet"
+smartnote_tfidf_model_out = "outputs/risk_proxy/smartnote_tfidf_logreg.joblib"
+proxy_summary_out = "outputs/risk_proxy/proxy_summary.json"
+oracle_out = "outputs/audit/oracle_audit.jsonl"
+oracle_summary_out = "outputs/audit/oracle_audit_summary.json"
+oracle_batch_dir = "outputs/audit/batch"
+oracle_raw_out = "outputs/audit/oracle_audit_raw.jsonl"
+risk_eval_out = "outputs/eval/risk_control_summary.csv"
+risk_eval_meta_out = "outputs/eval/risk_control_summary.meta.json"
+routing_out = "outputs/routing/simulate_routing.csv"
+figure_dir = "outputs/figures"
+
+# Model and sampling
+tfidf_max_features = 300
+n_jobs = 2
+rnsum_proxy = "overlap"
+neobert_model = "chandar-lab/NeoBERT"
+neobert_batch_size = 8
+neobert_max_length = 128
+neobert_threads = 2
+trust_remote_code = true
+
+# Risk and simulation
+deltas = [0.2, 0.4, 0.6, 0.8]
+compare_corrections = true
+gap_quantile = 0.9
+mode = "standard"
+proxy_model = "tfidf"
+ci_alpha = 0.05
+
+proxy_cost = 0.001
+oracle_cost = 1.0
+delta_step = 0.2
+baselines_random_state = 42
+
+compare_reference = false
+reference_manifest = "artifacts/reference/manifest.json"
+reference_run_meta = "artifacts/reference/run-meta.json"

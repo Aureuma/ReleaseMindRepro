@@ -1,0 +1,6 @@
+{"raw":"{\"label\": \"Include\", \"reasoning\": \"User-facing change\"}","dataset":"smartnote","expected":"oracle_label=1"}
+{"raw":"{\"label\": \"Exclude\", \"reasoning\": \"Internal refactor\"}","dataset":"smartnote","expected":"oracle_label=0"}
+{"raw":"{\"hallucination_count\": 2, \"reasoning\": \"Missing reference\"}","dataset":"rnsum","expected":"oracle_label=1"}
+{"raw":"{\"hallucination_count\": 0, \"reasoning\": \"No unsupported claims\"}","dataset":"rnsum","expected":"oracle_label=0"}
+{"raw":"not-json", "dataset":"smartnote", "expected":"parse_failure"}
+{"raw":"{\"label\": \"INVALID\"}","dataset":"smartnote","expected":"default_binary"}
